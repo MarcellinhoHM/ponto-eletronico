@@ -1,8 +1,12 @@
-navigator.geolocation.getCurrentPosition((position) => {
-    console.log(position);
-    console.log(position.coords.latitude);
-    console.log(position.coords.longitude);
-});
+function getUserLocation(){
+    navigator.geolocation.getCurrentPosition((position) => {
+        let userlocation = {
+            "lat":position.coords.latitude,
+            "long":position.coords.latitude
+        }
+        return userlocation
+    })
+}
 
 const date = new Date();
 const diaSemana = document.getElementById("dia-semana");
@@ -25,6 +29,48 @@ dialogData.textContent = getCurrentDate();
 
 const dialogHora = document.getElementById("dialog-hora");
 dialogHora.textContent = getCurrentTime(); 
+
+const btnDialogEntrada = document.getElementById("btn-dialog-entrada");
+btnDialogEntrada.addEventListener("click", () => {
+
+    let currentDate = getCurrentDate();
+    let currentTime = getCurrentTime();
+    let userlocation = getUserLocation();
+
+    console.log(currentDate);
+    console.log(currentTime);
+    console.log(userlocation);
+    
+    ponto = {
+        "date": currentDate,
+        "time": currentTime,
+        "location": userlocation,
+        "id": 1,
+        "type": "entrada"
+    }
+    console.log(ponto);
+})
+
+const btnDialogSaida = document.getElementById("btn-dialog-saida");
+btnDialogSaida.addEventListener("click", () => {
+
+    let currentDate = getCurrentDate();
+    let currentTime = getCurrentTime();
+    let userlocation = getUserLocation();
+
+    console.log(currentDate);
+    console.log(currentTime);
+    console.log(userlocation);
+    
+    ponto = {
+        "date": currentDate,
+        "time": currentTime,
+        "location": userlocation,
+        "id": 1,
+        "type": "saida"
+    }
+    console.log(ponto);
+})
 
 
 const btnDialogFechar = document.getElementById("dialog-fechar");
