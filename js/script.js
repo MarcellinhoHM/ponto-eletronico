@@ -1,106 +1,130 @@
-function getUserLocation(){
-    navigator.geolocation.getCurrentPosition((position) => {
-        let userlocation = {
-            "lat":position.coords.latitude,
-            "long":position.coords.latitude
-        }
-        return userlocation
-    })
-}
-
 const date = new Date();
 const diaSemana = document.getElementById("dia-semana");
 const dataAtual = document.getElementById("data-atual");
 const horaAtual = document.getElementById("hora-atual");
-const btnRegister = document.getElementById("btn-register");
+const btnRegistrarPonto = document.getElementById("btn-registrar-ponto");
 
-btnRegister.addEventListener("click", register);
+btnRegistrarPonto.addEventListener("click", register);
 
-function updateContentHour(){
-    dataAtual.textContent = getCurrentDate();
-    horaAtual.textContent = getCurrentTime();
-    diaSemana.textContent = getWeekDay();
-}
+diaSemana.textContent = getWeekDay();
+dataAtual.textContent = getCurrentDate();
 
 const dialogPonto = document.getElementById("dialog-ponto");
 
 const dialogData = document.getElementById("dialog-data");
-dialogData.textContent = getCurrentDate(); 
+dialogData.textContent = getCurrentDate();
 
 const dialogHora = document.getElementById("dialog-hora");
-dialogHora.textContent = getCurrentTime(); 
+dialogHora.textContent = getCurrentTime();
 
-const btnDialogEntrada = document.getElementById("btn-dialog-entrada");
-btnDialogEntrada.addEventListener("click", () => {
+const selectRegisterType = document.getElementById("register-type");
 
-    let currentDate = getCurrentDate();
-    let currentTime = getCurrentTime();
-    let userlocation = getUserLocation();
-
-    console.log(currentDate);
-    console.log(currentTime);
-    console.log(userlocation);
-    
-    ponto = {
-        "date": currentDate,
-        "time": currentTime,
-        "location": userlocation,
-        "id": 1,
-        "type": "entrada"
+function setRegisterType() {
+    let lastType = localStorage.getItem("lastRegisterType");
+    if(lastType == "entrada") {
+        selectRegisterType.value = "intervalo";
+        return;
     }
-    console.log(ponto);
-})
+    if(lastType == "intervalo") {
 
-const btnDialogSaida = document.getElementById("btn-dialog-saida");
-btnDialogSaida.addEventListener("click", () => {
-
-    let currentDate = getCurrentDate();
-    let currentTime = getCurrentTime();
-    let userlocation = getUserLocation();
-
-    console.log(currentDate);
-    console.log(currentTime);
-    console.log(userlocation);
-    
-    ponto = {
-        "date": currentDate,
-        "time": currentTime,
-        "location": userlocation,
-        "id": 1,
-        "type": "saida"
     }
-    console.log(ponto);
-})
+    if(lastType == "volta-intervalo") {
 
+    }
+    if(lastType == "saida") {
 
-const btnDialogFechar = document.getElementById("dialog-fechar");
-btnDialogFechar.addEventListener("click", ()=> {
+    }
+    
+}
+
+const btnDialogRegister = document.getElementById("btn-dialog-register");
+btnDialogRegister.addEventListener("click", () => {
+
+    let register = getObjectRegister(selectRegisterType.value);
+    saveRegisterLocalStorage(register);
+
+    localStorage.setItem("lastRegisterType", selectRegisterType.value);
+
+    dialogPonto.close();
+});
+
+function getObjectRegister(registerType) {
+
+    ponto = {
+        "date": getCurrentDate(),
+        "time": getCurrentTime(),
+        "location": getUserLocation(),
+        "id": 1,
+        "type": registerType
+    }
+    return ponto;
+}
+
+const fecharDialog = document.getElementById("dialog-fechar");
+fecharDialog.addEventListener("click", () => {
     dialogPonto.close();
 })
 
-function register(){
-    alert("im doin' your mom");
+const registersLocalStorage = getRegisterLocalStorage("register");
+
+function saveRegisterLocalStorage(register) {
+
+    registersLocalStorage.push(register);
+
+    localStorage.setItem("register", JSON.stringify(registersLocalStorage));
+}
+
+function getRegisterLocalStorage(key) {
+    
+    let registers = localStorage.getItem(key);
+
+    if(!registers) {
+        return [];
+    }
+
+    return JSON.parse(registers);
+
+}
+
+function register() {
     dialogPonto.showModal();
+}
+
+function updateContentHour() {
+    horaAtual.textContent = getCurrentTime();
 }
 
 function getCurrentTime() {
     const date = new Date();
-    return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    return String(date.getHours()).padStart(2, '0') + ":" + String(date.getMinutes()).padStart(2, '0') + ":" + String(date.getSeconds()).padStart(2, '0');
 }
-
 
 function getCurrentDate() {
     const date = new Date();
-    return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
+    return String(date.getDate()).padStart(2, '0') + "/" + String((date.getMonth() + 1)).padStart(2, '0') + "/" + date.getFullYear();
 }
 
 function getWeekDay() {
-    const weekday = ["Sunday-feira", "Monday-feira", "Tuesday-feira", "Wednesday-feira", "Thursday-feira", "Friday-feira", "Saturday-feira"];
+    const weekday = ["Domingo-feira", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sabado-feira"];
     return weekday[date.getDay()];
 }
 
+let locationUser = {};
+
+function getUserLocation() {
+    navigator.geolocation.getCurrentPosition((position) => {
+        let userLocation = {
+            "lat":position.coords.latitude,
+            "long": position.coords.longitude
+        }
+        locationUser = userLocation;
+        console.log(locationUser);
+    });    
+}
+
+updateContentHour();
 setInterval(updateContentHour, 1000);
 
-console.log(getCurrentTime());
-console.log(getCurrentDate());
 console.log(getWeekDay());
+console.log(getCurrentDate());
+console.log(getCurrentTime());

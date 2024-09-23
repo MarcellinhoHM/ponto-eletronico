@@ -3,24 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sisema de ponto eletrônico</title>
+    <title>Sistema de controle de ponto</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="data-hora">
-        <p id="dia-semana">Segunda-feira</p>
-        <p id="data-atual">26/08/2024</p>
-        <p id="hora-atual">08:28:04</p>
-        <button id = "btn-register"> Registrar ponto</button>
+        <p id="dia-semana"></p>
+        <p id="data-atual"></p>
+        <p id="hora-atual"></p>       
+        <button id="btn-registrar-ponto">Registrar ponto</button>    
     </div>
 
-    <dialog id = "dialog-ponto">
-        <p id="dialog-data">Data</p>
-        <p id="dialog-hora">Hora</p>
-        <button id="btn-dialog-entrada">Entrada</button>
-        <button id= "btn-dialog-saida">Saída</button>
-        <button id= "dialog-fechar">X</button>
+    <dialog id="dialog-ponto">
+        <p id="dialog-data">Data:</p>
+        <p id="dialog-hora">Hora:</p>
+        <select name="register-type" id="register-type">
+            <option value="entrada">Entrada</option>
+            <option value="intervalo">Intervalo</option>
+            <option value="volta-intervalo">Volta intervalo</option>
+            <option value="saida">Saída</option>
+        </select>
+        <button id="btn-dialog-register">Registrar</button>
 
+        <!--
+        <button>Intervalo</button>
+        <button>Volta intervalo</button>
+        <button id="saida-dialog">Saída</button>
+        -->
+        
+        <button id="dialog-fechar">X</button>
     </dialog>
 
     <script src="js/script.js"></script>
