@@ -1,10 +1,13 @@
 body {
+    background-image: url("/image.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh; /* Faz a altura ocupar toda a janela */
     margin: 0; /* Remove margens padrão do body */
-    background-color: #f0f0f0; /* Cor de fundo leve */
 }
 
 .data-hora {
